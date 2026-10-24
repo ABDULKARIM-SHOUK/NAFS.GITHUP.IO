@@ -190,6 +190,7 @@ a{color:inherit;text-decoration:none}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 .sheet .btn,.rev+.btn,.pad>.btn{width:100%}
 a.btn{display:block}
+.chg{margin-top:6px;font-size:12.5px;font-weight:600;color:var(--brand);text-decoration:underline;padding:2px 0}
 
 </style>
 </head>
@@ -2819,7 +2820,7 @@ const BANDS = [[0, 'بحاجة إلى دعم'], [50, 'قيد التطوّر'], [
 const KEY = 'nafs-v2';
 let S = { name: '', grade: 6, digits: 'ar', sound: true, best: {}, mocks: {} };
 try { const r = localStorage.getItem(KEY); if (r) S = Object.assign(S, JSON.parse(r)); } catch (e) {}
-try { if (!S.name) for (const k of ['english-quest-nafs6', 'english-quest-nafs3', 'english-quest-nafs-math6', 'english-quest-nafs-math3']) { const o = localStorage.getItem(k); if (o) { const n = JSON.parse(o).name; if (n) { S.name = String(n); break; } } } } catch (e) {}
+/* the name is asked for here; names saved by the older pages are not carried over */
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 
 /* ---------- dom helpers ---------- */
@@ -2993,6 +2994,7 @@ function portal() {
       h('span', { class: 'grow' }, h('h3', null, s.title), h('p', null, loc(s.domains.length + ' مجالات · ' + nl + ' درسًا · ' + s.blurb)), h('div', { class: 'bar' }, h('i', { style: 'width:' + p + '%' }))),
       h('span', { class: 'chev' }, '‹')));
   });
+  if (nmy()) heroTxt.append(h('button', { class: 'chg', onclick: () => { S.name = ''; save(); portal(); setTimeout(() => { const i = document.getElementById('nm'); if (i) i.focus(); }, 50); } }, 'لستَ ' + nmy() + '؟ غيّر الاسم'));
   const kids = [topbar('تدريب نافس', 'القراءة · الرياضيات · العلوم'), h('div', { class: 'pad' }, hero, nmy() ? null : nameBox, seg, list,
     h('div', { class: 'note' }, 'تدريبات مساندة مبنية على مجالات اختبار نافس ومستوياته المعرفية (المعرفة، التطبيق، الاستدلال) ومنهج المملكة العربية السعودية، وليست نماذج رسمية من هيئة تقويم التعليم والتدريب. يُحفظ التقدم على هذا الجهاز فقط.'))];
   mount(h('div', { class: 'screen' }, kids));
